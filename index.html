@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>studysheet. — notes, flashcards & quizzes on anything</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F4FB;
+    --surface:#FFFFFF;
+    --ink:#1E1B3A;
+    --ink-soft:#5C5A78;
+    --ink-faint:#8C89A8;
+    --accent:#5B4FE9;
+    --accent-dark:#4438D6;
+    --accent-soft:#EBE8FD;
+    --mint:#1FAE8E;
+    --mint-soft:#E1F6F1;
+    --coral:#E8543E;
+    --coral-soft:#FCE7E4;
+    --gold:#E0A500;
+    --gold-soft:#FBF0D6;
+    --line:#E4E1F3;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(30,27,58,0.03), 0 4px 14px -8px rgba(30,27,58,0.10);
+    --shadow-sm:0 1px 2px rgba(30,27,58,0.05);
+  }
+  body[data-theme="dark"]{
+    --bg:#15132A;
+    --surface:#1E1B3A;
+    --ink:#F1F0FA;
+    --ink-soft:#B3B0CE;
+    --ink-faint:#78759A;
+    --accent:#8B7EFF;
+    --accent-dark:#A69AFF;
+    --accent-soft:#2A2650;
+    --mint:#3CD9B0;
+    --mint-soft:#153B34;
+    --coral:#FF7A66;
+    --coral-soft:#3D1E1C;
+    --gold:#F2C14E;
+    --gold-soft:#3A2F10;
+    --line:#332E5C;
+    --shadow:0 1px 2px rgba(0,0,0,0.2), 0 8px 24px -12px rgba(0,0,0,0.45);
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    transition:background .2s ease, color .2s ease;
+  }
+
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- header ---------- */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 28px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface);
+    position:sticky;top:0;z-index:20;
+  }
+  .topbar-left{display:flex;align-items:center;gap:12px;}
+  .logo{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;font-size:19px;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+    display:flex;align-items:center;gap:8px;
+  }
+  .logo .mark{
+    width:20px;height:20px;border-radius:6px;
+    background:linear-gradient(135deg,var(--accent),var(--mint));
+    display:inline-block;flex:none;
+  }
+  .logo span{color:var(--accent);}
+  .powered-badge{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;
+    color:var(--ink-faint);display:flex;align-items:center;gap:5px;
+    padding:4px 10px;border-radius:100px;border:1px solid var(--line);
+  }
+  .powered-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);flex:none;}
+  .topbar-right{display:flex;align-items:center;gap:8px;}
+  .stat-pill{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+    background:var(--gold-soft);color:var(--gold);
+    padding:6px 11px;border-radius:100px;font-weight:600;
+    display:flex;align-items:center;gap:5px;
+  }
+  .icon-btn{
+    width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line);background:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--ink-soft);font-size:15px;
+    transition:all .15s ease;
+  }
+  .icon-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* ---------- layout ---------- */
+  .app{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:0;
+    max-width:1240px;
+    margin:0 auto;
+    min-height:calc(100vh - 66px);
+  }
+  @media (max-width:860px){
+    .app{grid-template-columns:1fr;}
+    aside.controls{border-right:none;border-bottom:1px solid var(--line);}
+  }
+
+  aside.controls{
+    padding:22px 20px;
+    border-right:1px solid var(--line);
+    background:var(--surface);
+    display:flex;flex-direction:column;
+  }
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;font-size:12px;font-weight:600;
+    text-transform:uppercase;letter-spacing:0.06em;
+    color:var(--ink-soft);margin-bottom:8px;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  textarea, select{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:11px 12px;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+    background:var(--bg);
+    resize:none;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  textarea{height:68px;line-height:1.4;}
+  textarea:focus, select:focus{
+    outline:none;border-color:var(--accent);
+    box-shadow:0 0 0 3px var(--accent-soft);
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .chip{
+    font-size:12px;padding:5px 10px;border-radius:100px;
+    border:1px solid var(--line);background:var(--bg);
+    color:var(--ink-soft);cursor:pointer;
+    font-family:'IBM Plex Mono',monospace;
+    transition:all .12s ease;
+  }
+  .chip:hover{border-color:var(--accent);color:var(--accent-dark);background:var(--accent-soft);}
+
+  .mode-tabs{display:flex;gap:0;margin-bottom:4px;}
+  .mode-tab{
+    flex:1;text-align:center;padding:10px 4px 9px;
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;
+    color:var(--ink-faint);background:var(--bg);border:1px solid var(--line);
+    cursor:pointer;position:relative;transition:all .12s ease;
+  }
+  .mode-tab:first-child{border-radius:10px 0 0 10px;}
+  .mode-tab:last-child{border-radius:0 10px 10px 0;}
+  .mode-tab + .mode-tab{border-left:none;}
+  .mode-tab.active{
+    background:var(--surface);color:var(--accent-dark);border-color:var(--accent);
+    box-shadow:inset 0 2px 0 var(--accent);z-index:1;
+  }
+  .mode-tab:not(.active):hover{color:var(--ink-soft);}
+
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+  .generate-btn{
+    width:100%;
+    background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:#fff;border:none;border-radius:10px;padding:13px;
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14.5px;
+    cursor:pointer;margin-top:4px;
+    transition:filter .12s ease, transform .08s ease;
+    box-shadow:0 6px 16px -6px rgba(91,79,233,0.55);
+  }
+  .generate-btn:hover{filter:brightness(1.08);}
+  .generate-btn:active{transform:scale(0.98);}
+  .generate-btn:disabled{background:var(--ink-faint);cursor:not-allowed;box-shadow:none;filter:none;}
+
+  .hint{font-size:11.5px;color:var(--ink-faint);margin-top:10px;line-height:1.5;}
+
+  /* ---------- history ---------- */
+  .history-block{margin-top:auto;padding-top:20px;border-top:1px solid var(--line);}
+  .history-head{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;
+  }
+  .history-head label{margin:0;}
+  .clear-history{
+    background:none;border:none;color:var(--ink-faint);font-size:11px;
+    font-family:'IBM Plex Mono',monospace;cursor:pointer;text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .clear-history:hover{color:var(--coral);}
+  .history-list{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto;}
+  .history-item{
+    display:flex;align-items:center;gap:8px;
+    padding:8px 9px;border-radius:9px;border:1px solid transparent;
+    cursor:pointer;transition:all .12s ease;
+  }
+  .history-item:hover{background:var(--bg);border-color:var(--line);}
+  .history-icon{
+    flex:none;width:24px;height:24px;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;font-size:12px;
+    background:var(--accent-soft);color:var(--accent-dark);
+  }
+  .history-text{flex:1;min-width:0;}
+  .history-topic{font-size:12.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .history-meta{font-size:10.5px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;}
+  .history-del{
+    flex:none;background:none;border:none;color:var(--ink-faint);
+    cursor:pointer;font-size:14px;padding:2px 4px;border-radius:4px;opacity:0;transition:opacity .12s ease;
+  }
+  .history-item:hover .history-del{opacity:1;}
+  .history-del:hover{color:var(--coral);}
+  .history-empty{font-size:12px;color:var(--ink-faint);font-style:italic;}
+
+  /* ---------- output panel ---------- */
+  main.output{padding:30px 32px;min-width:0;}
+  .empty-state{
+    height:100%;min-height:420px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;color:var(--ink-faint);
+  }
+  .empty-state .glyph{font-size:36px;margin-bottom:12px;}
+  .empty-state h3{color:var(--ink-soft);font-size:16px;margin:0 0 6px;}
+  .empty-state p{font-size:13.5px;max-width:300px;margin:0;}
+
+  .loading{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:420px;gap:14px;color:var(--ink-soft);
+  }
+  .spinner{
+    width:28px;height:28px;border-radius:50%;
+    border:3px solid var(--accent-soft);border-top-color:var(--accent);
+    animation:spin .7s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .loading span{font-family:'IBM Plex Mono',monospace;font-size:13px;}
+  .stream-preview{
+    width:100%;max-width:520px;max-height:180px;overflow-y:auto;
+    background:var(--bg);border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+    color:var(--ink-faint);white-space:pre-wrap;word-break:break-word;
+    text-align:left;margin:0;
+  }
+
+  .error-box{
+    background:var(--coral-soft);border:1px solid var(--coral);
+    color:var(--coral);border-radius:10px;padding:14px 16px;font-size:13.5px;
+  }
+
+  .content-head{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:20px;flex-wrap:wrap;gap:10px;
+  }
+  .content-head h2{font-size:22px;margin:0;letter-spacing:-0.01em;}
+  .content-head-left{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .badge{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+    background:var(--accent-soft);color:var(--accent-dark);
+    padding:4px 10px;border-radius:100px;font-weight:600;
+  }
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;}
+  .tool-btn{
+    display:flex;align-items:center;gap:6px;
+    background:var(--bg);border:1px solid var(--line);border-radius:8px;
+    padding:7px 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;
+    color:var(--ink-soft);cursor:pointer;transition:all .12s ease;
+  }
+  .tool-btn:hover{border-color:var(--accent);color:var(--accent-dark);background:var(--accent-soft);}
+
+  /* ---------- notes ---------- */
+  .notes-section{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px 22px;margin-bottom:14px;
+    box-shadow:var(--shadow);
+    animation:fadeUp .35s ease both;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .notes-section h3{
+    font-size:15.5px;margin:0 0 10px;color:var(--accent-dark);
+    display:flex;align-items:center;gap:8px;
+  }
+  .notes-section h3::before{
+    content:'';width:6px;height:6px;border-radius:50%;
+    background:var(--accent);display:inline-block;flex:none;
+  }
+  .notes-section ul{margin:0;padding-left:20px;}
+  .notes-section li{margin-bottom:7px;font-size:14.5px;line-height:1.55;color:var(--ink);}
+  .notes-section li::marker{color:var(--accent);}
+  .takeaways{
+    background:var(--mint-soft);border:1px solid var(--mint);
+    border-radius:var(--radius);padding:18px 20px;margin-top:6px;
+  }
+  .takeaways h3{color:var(--mint);margin:0 0 10px;font-size:14px;
+    text-transform:uppercase;letter-spacing:.05em;font-family:'IBM Plex Mono',monospace;}
+  .takeaways ul{margin:0;padding-left:18px;}
+  .takeaways li{font-size:14px;margin-bottom:6px;color:var(--ink);line-height:1.5;}
+
+  /* ---------- flashcards ---------- */
+  .deck-wrap{display:flex;flex-direction:column;align-items:center;}
+  .fc-stats{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;justify-content:center;}
+  .fc-stat{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;
+    padding:5px 11px;border-radius:100px;display:flex;align-items:center;gap:5px;
+  }
+  .fc-stat.know{background:var(--mint-soft);color:var(--mint);}
+  .fc-stat.learn{background:var(--coral-soft);color:var(--coral);}
+  .flashcard{
+    width:100%;max-width:460px;height:260px;
+    perspective:1400px;cursor:pointer;margin-bottom:16px;
+  }
+  .flashcard-inner{
+    position:relative;width:100%;height:100%;
+    transition:transform .5s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+  .fc-face{
+    position:absolute;inset:0;backface-visibility:hidden;
+    border-radius:16px;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    padding:28px;text-align:center;box-shadow:var(--shadow);
+  }
+  .fc-front{background:var(--surface);}
+  .fc-front .fc-text{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:19px;line-height:1.4;}
+  .fc-back{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;transform:rotateY(180deg);}
+  .fc-back .fc-text{font-size:15.5px;line-height:1.55;}
+  .fc-tag{position:absolute;top:14px;left:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-faint);}
+  .fc-back .fc-tag{color:rgba(255,255,255,0.75);}
+  .fc-known-mark{position:absolute;top:12px;right:14px;font-size:15px;}
+  .fc-flip-note{position:absolute;bottom:14px;right:16px;font-size:11px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;}
+  .fc-back .fc-flip-note{color:rgba(255,255,255,0.75);}
+
+  .know-buttons{display:flex;gap:10px;margin-bottom:16px;}
+  .know-btn{
+    display:flex;align-items:center;gap:7px;
+    border:1px solid var(--line);border-radius:9px;padding:9px 16px;
+    background:var(--surface);cursor:pointer;font-family:'Space Grotesk',sans-serif;
+    font-weight:600;font-size:13px;color:var(--ink-soft);transition:all .12s ease;
+  }
+  .know-btn.learn-btn:hover{border-color:var(--coral);color:var(--coral);background:var(--coral-soft);}
+  .know-btn.know-btn-yes:hover{border-color:var(--mint);color:var(--mint);background:var(--mint-soft);}
+  .know-btn.active-learn{border-color:var(--coral);color:var(--coral);background:var(--coral-soft);}
+  .know-btn.active-know{border-color:var(--mint);color:var(--mint);background:var(--mint-soft);}
+
+  .deck-controls{display:flex;align-items:center;gap:14px;}
+  .deck-btn{
+    width:38px;height:38px;border-radius:50%;border:1px solid var(--line);
+    background:var(--surface);cursor:pointer;font-size:16px;
+    display:flex;align-items:center;justify-content:center;color:var(--ink);
+    transition:all .12s ease;
+  }
+  .deck-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .deck-btn:disabled{opacity:0.35;cursor:not-allowed;}
+  .deck-progress{display:flex;gap:5px;flex-wrap:wrap;max-width:160px;justify-content:center;}
+  .deck-dot{width:6px;height:6px;border-radius:50%;background:var(--line);}
+  .deck-dot.active{background:var(--accent);width:16px;border-radius:3px;transition:all .2s ease;}
+  .deck-dot.marked-know{background:var(--mint);}
+  .deck-dot.marked-learn{background:var(--coral);}
+  .deck-count{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-faint);margin-left:4px;}
+  .deck-actions{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;justify-content:center;}
+  .link-btn{
+    background:none;border:none;color:var(--ink-faint);
+    font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer;
+    text-decoration:underline;text-underline-offset:3px;
+  }
+  .link-btn:hover{color:var(--accent-dark);}
+  .link-btn.active-filter{color:var(--accent);font-weight:600;}
+
+  /* ---------- quiz ---------- */
+  .quiz-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .quiz-timer{
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-faint);
+    display:flex;align-items:center;gap:5px;
+  }
+  .quiz-progress-bar{height:5px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:22px;}
+  .quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--mint));transition:width .3s ease;}
+  .quiz-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 26px 22px;box-shadow:var(--shadow);
+    animation:fadeUp .3s ease both;
+  }
+  .quiz-qnum{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent);font-weight:600;margin-bottom:8px;}
+  .quiz-question{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:17.5px;line-height:1.4;margin:0 0 20px;}
+  .quiz-options{display:flex;flex-direction:column;gap:10px;}
+  .quiz-option{
+    display:flex;align-items:center;gap:12px;
+    border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px;cursor:pointer;background:var(--bg);
+    transition:all .12s ease;
+  }
+  .quiz-option:hover:not(.locked){border-color:var(--accent);background:var(--accent-soft);}
+  .bubble{
+    flex:none;width:26px;height:26px;border-radius:50%;
+    border:2px solid var(--ink-faint);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;
+    color:var(--ink-faint);background:var(--surface);
+    transition:all .12s ease;
+  }
+  .quiz-option:hover:not(.locked) .bubble{border-color:var(--accent);color:var(--accent-dark);}
+  .quiz-option.selected .bubble{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .quiz-option-text{font-size:14.5px;color:var(--ink);}
+  .quiz-option.correct{border-color:var(--mint);background:var(--mint-soft);}
+  .quiz-option.correct .bubble{background:var(--mint);border-color:var(--mint);color:#fff;}
+  .quiz-option.incorrect{border-color:var(--coral);background:var(--coral-soft);}
+  .quiz-option.incorrect .bubble{background:var(--coral);border-color:var(--coral);color:#fff;}
+  .quiz-option.locked{cursor:default;}
+
+  .quiz-explain{
+    margin-top:16px;padding:14px 16px;border-radius:10px;
+    background:var(--bg);border:1px solid var(--line);
+    font-size:13.5px;line-height:1.55;color:var(--ink-soft);
+  }
+  .quiz-explain strong{color:var(--ink);}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:18px;}
+  .next-btn{
+    background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border:none;border-radius:9px;
+    padding:10px 20px;font-family:'Space Grotesk',sans-serif;font-weight:600;
+    font-size:13.5px;cursor:pointer;
+  }
+  .next-btn:hover{filter:brightness(1.08);}
+
+  .score-screen{text-align:center;padding:20px 10px;}
+  .score-ring{
+    width:120px;height:120px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 18px;background:conic-gradient(var(--accent) calc(var(--pct)*1%), var(--line) 0);
+  }
+  .score-ring-inner{
+    width:96px;height:96px;border-radius:50%;background:var(--surface);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .score-ring-inner .num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;}
+  .score-ring-inner .lbl{font-size:10.5px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;}
+  .score-time{font-size:12px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;margin-bottom:4px;}
+  .scantron-grid{
+    display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0;max-width:400px;margin-left:auto;margin-right:auto;
+  }
+  .scantron-cell{
+    width:28px;height:28px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:#fff;
+  }
+  .scantron-cell.correct{background:var(--mint);}
+  .scantron-cell.incorrect{background:var(--coral);}
+  .score-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px;}
+  .retake-btn{
+    background:var(--surface);border:1px solid var(--line);
+    padding:11px 22px;border-radius:9px;font-family:'Space Grotesk',sans-serif;
+    font-weight:600;font-size:13.5px;cursor:pointer;color:var(--ink);
+  }
+  .retake-btn:hover{border-color:var(--accent);color:var(--accent-dark);}
+
+  /* ---------- toast ---------- */
+  #toastContainer{
+    position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:100;
+  }
+  .toast{
+    background:var(--ink);color:var(--bg);
+    padding:11px 16px;border-radius:9px;font-size:13px;
+    box-shadow:0 8px 24px -8px rgba(0,0,0,0.3);
+    animation:toastIn .25s ease both;
+    display:flex;align-items:center;gap:8px;
+    max-width:280px;
+  }
+  .toast.err{background:var(--coral);color:#fff;}
+  .toast.ok{background:var(--mint);color:#04231c;}
+  @keyframes toastIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  /* ---------- confetti ---------- */
+  #confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:90;}
+
+  @media (max-width:560px){
+    .powered-badge{display:none;}
+    .topbar{padding:14px 18px;}
+  }
+
+  /* clean thin scrollbars */
+  .history-list::-webkit-scrollbar, .stream-preview::-webkit-scrollbar{width:6px;}
+  .history-list::-webkit-scrollbar-thumb, .stream-preview::-webkit-scrollbar-thumb{
+    background:var(--line);border-radius:10px;
+  }
+  .history-list, .stream-preview{scrollbar-width:thin;scrollbar-color:var(--line) transparent;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confettiCanvas"></canvas>
+<div id="toastContainer"></div>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo"><span class="mark"></span>study<span>sheet</span>.</div>
+    <div class="powered-badge"><span class="dot"></span>Groq · Llama 3.3 70B</div>
+  </div>
+  <div class="topbar-right">
+    <div class="stat-pill" id="statPill" title="Sets you've generated">🔥 <span id="statCount">0</span> sets</div>
+    <button class="icon-btn" id="themeToggle" title="Toggle dark mode">🌙</button>
+  </div>
+</div>
+
+<div class="app">
+  <aside class="controls">
+    <div class="field">
+      <label for="topic">Topic</label>
+      <textarea id="topic" placeholder="e.g. photosynthesis, the French Revolution, Big-O notation..."></textarea>
+      <div class="chips">
+        <span class="chip" data-topic="Photosynthesis">photosynthesis</span>
+        <span class="chip" data-topic="The French Revolution">french revolution</span>
+        <span class="chip" data-topic="Newton's laws of motion">newton's laws</span>
+        <span class="chip" data-topic="SQL joins">sql joins</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>What do you need?</label>
+      <div class="mode-tabs">
+        <div class="mode-tab active" data-mode="notes">Notes</div>
+        <div class="mode-tab" data-mode="flashcards">Cards</div>
+        <div class="mode-tab" data-mode="quiz">Quiz</div>
+      </div>
+    </div>
+
+    <div class="field row-2">
+      <div>
+        <label for="level">Level</label>
+        <select id="level">
+          <option value="beginner">Beginner</option>
+          <option value="high school" selected>High school</option>
+          <option value="college">College</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+      <div id="countWrap">
+        <label for="count">Count</label>
+        <select id="count">
+          <option value="5">5</option>
+          <option value="8" selected>8</option>
+          <option value="12">12</option>
+          <option value="16">16</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="generate-btn" id="generateBtn">Generate</button>
+    <p class="hint">Type any topic, pick a format, and studysheet builds it in seconds. Past sets are saved below — click one to reopen instantly.</p>
+
+    <div class="history-block">
+      <div class="history-head">
+        <label>Recent</label>
+        <button class="clear-history" id="clearHistory">clear all</button>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+  </aside>
+
+  <main class="output" id="output">
+    <div class="empty-state">
+      <div class="glyph">📚</div>
+      <h3>Nothing here yet</h3>
+      <p>Enter a topic on the left and hit Generate to create your study material.</p>
+    </div>
+  </main>
+</div>
+
+<script>
+const state = {
+  mode: 'notes',
+  topic: '',
+  level: 'high school',
+  count: 8,
+  data: null,
+  fc: { index: 0, flipped: false, order: [], status: {}, filterUnknown: false },
+  quiz: { index: 0, answers: [], locked: false, startTime: null, elapsed: 0, timerId: null }
+};
+
+const els = {
+  topic: document.getElementById('topic'),
+  level: document.getElementById('level'),
+  count: document.getElementById('count'),
+  countWrap: document.getElementById('countWrap'),
+  generateBtn: document.getElementById('generateBtn'),
+  output: document.getElementById('output'),
+  historyList: document.getElementById('historyList'),
+  statCount: document.getElementById('statCount'),
+  themeToggle: document.getElementById('themeToggle'),
+};
+
+/* ---------------- theme ---------------- */
+function initTheme(){
+  const saved = localStorage.getItem('studysheet_theme') || 'light';
+  document.body.setAttribute('data-theme', saved);
+  els.themeToggle.textContent = saved === 'dark' ? '☀️' : '🌙';
+}
+els.themeToggle.addEventListener('click', ()=>{
+  const cur = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', cur);
+  localStorage.setItem('studysheet_theme', cur);
+  els.themeToggle.textContent = cur === 'dark' ? '☀️' : '🌙';
+});
+initTheme();
+
+/* ---------------- toast ---------------- */
+function showToast(msg, type){
+  const t = document.createElement('div');
+  t.className = 'toast' + (type ? ' ' + type : '');
+  t.textContent = msg;
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .2s ease'; setTimeout(()=>t.remove(), 200); }, 2400);
+}
+
+/* ---------------- history & stats ---------------- */
+function getHistory(){
+  try{ return JSON.parse(localStorage.getItem('studysheet_history') || '[]'); }catch(e){ return []; }
+}
+function saveHistory(list){
+  localStorage.setItem('studysheet_history', JSON.stringify(list.slice(0,12)));
+}
+function addToHistory(entry){
+  const list = getHistory();
+  list.unshift(entry);
+  saveHistory(list);
+  renderHistory();
+  bumpStat();
+}
+function bumpStat(){
+  const n = parseInt(localStorage.getItem('studysheet_sets_count') || '0', 10) + 1;
+  localStorage.setItem('studysheet_sets_count', String(n));
+  els.statCount.textContent = n;
+}
+function loadStat(){
+  els.statCount.textContent = localStorage.getItem('studysheet_sets_count') || '0';
+}
+loadStat();
+
+const modeIcon = { notes: '📝', flashcards: '🗂️', quiz: '❓' };
+
+function renderHistory(){
+  const list = getHistory();
+  if(!list.length){
+    els.historyList.innerHTML = '<div class="history-empty">Nothing generated yet.</div>';
+    return;
+  }
+  els.historyList.innerHTML = list.map((item, idx) => `
+    <div class="history-item" data-idx="${idx}">
+      <div class="history-icon">${modeIcon[item.mode]}</div>
+      <div class="history-text">
+        <div class="history-topic">${escapeHtml(item.topic)}</div>
+        <div class="history-meta">${item.mode} · ${escapeHtml(item.level)}</div>
+      </div>
+      <button class="history-del" data-del="${idx}" title="Remove">×</button>
+    </div>`).join('');
+
+  els.historyList.querySelectorAll('.history-item').forEach(node=>{
+    node.addEventListener('click', (e)=>{
+      if(e.target.classList.contains('history-del')) return;
+      const idx = parseInt(node.dataset.idx, 10);
+      openFromHistory(list[idx]);
+    });
+  });
+  els.historyList.querySelectorAll('.history-del').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.del, 10);
+      const l = getHistory();
+      l.splice(idx,1);
+      saveHistory(l);
+      renderHistory();
+    });
+  });
+}
+document.getElementById('clearHistory').addEventListener('click', ()=>{
+  saveHistory([]);
+  renderHistory();
+  showToast('History cleared');
+});
+
+function openFromHistory(item){
+  state.mode = item.mode;
+  state.topic = item.topic;
+  state.level = item.level;
+  state.count = item.count;
+  state.data = item.data;
+  els.topic.value = item.topic;
+  els.level.value = item.level;
+  document.querySelectorAll('.mode-tab').forEach(t=>{
+    t.classList.toggle('active', t.dataset.mode === item.mode);
+  });
+  els.countWrap.style.visibility = item.mode === 'notes' ? 'hidden' : 'visible';
+
+  if(item.mode === 'notes') renderNotes();
+  else if(item.mode === 'flashcards'){
+    state.fc = { index:0, flipped:false, order:(item.data.cards||[]).map((_,i)=>i), status:{}, filterUnknown:false };
+    renderFlashcards();
+  } else {
+    state.quiz = { index:0, answers:new Array((item.data.questions||[]).length).fill(null), locked:false, startTime:Date.now(), elapsed:0, timerId:null };
+    startQuizTimer();
+    renderQuiz();
+  }
+  showToast('Loaded from history');
+}
+
+renderHistory();
+
+/* ---------------- chips / tabs ---------------- */
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click', ()=>{ els.topic.value = c.dataset.topic; els.topic.focus(); });
+});
+
+document.querySelectorAll('.mode-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    state.mode = tab.dataset.mode;
+    els.countWrap.style.visibility = state.mode === 'notes' ? 'hidden' : 'visible';
+  });
+});
+
+els.generateBtn.addEventListener('click', generate);
+els.topic.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter' && (e.metaKey || e.ctrlKey)) generate();
+});
+
+function renderLoading(){
+  const msgs = {
+    notes: 'Organizing the key ideas…',
+    flashcards: 'Cutting out the flashcards…',
+    quiz: 'Writing the questions…'
+  };
+  els.output.innerHTML = `
+    <div class="loading">
+      <div class="spinner"></div>
+      <span>${msgs[state.mode]}</span>
+      <pre id="streamPreview" class="stream-preview"></pre>
+    </div>`;
+}
+
+function updateStreamPreview(text){
+  const el = document.getElementById('streamPreview');
+  if(el){
+    el.textContent = text;
+    el.scrollTop = el.scrollHeight;
+  }
+}
+
+function renderError(msg){
+  els.output.innerHTML = `<div class="error-box"><strong>Couldn't generate that.</strong><br>${escapeHtml(msg)}</div>`;
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function downloadFile(filename, content, mime){
+  const blob = new Blob([content], { type: mime || 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+async function callClaude(systemPrompt, userPrompt){
+  // Calls our FastAPI backend, which streams tokens back via
+  // Server-Sent Events as the model generates them. The API key lives
+  // only on the server (see backend/main.py) — never in this file.
+  const response = await fetch("/api/generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      max_tokens: 4000,
+      system: systemPrompt,
+      messages: [{ role: "user", content: userPrompt }]
+    })
+  });
+  if(!response.ok || !response.body){
+    const errBody = await response.json().catch(()=>({}));
+    throw new Error(errBody.error || ("The request failed (status " + response.status + "). Please try again."));
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let fullText = "";
+
+  while(true){
+    const { value, done } = await reader.read();
+    if(done) break;
+    buffer += decoder.decode(value, { stream: true });
+
+    // SSE events are separated by a blank line.
+    const events = buffer.split("\n\n");
+    buffer = events.pop(); // keep the last (possibly incomplete) chunk
+
+    for(const evt of events){
+      const line = evt.trim();
+      if(!line.startsWith("data:")) continue;
+      const dataStr = line.slice(5).trim();
+      if(dataStr === "[DONE]") continue;
+      let parsed;
+      try{ parsed = JSON.parse(dataStr); }catch(e){ continue; }
+      if(parsed.error) throw new Error(parsed.error);
+      if(parsed.token){
+        fullText += parsed.token;
+        updateStreamPreview(fullText); // render progressively as tokens arrive
+      }
+    }
+  }
+
+  const cleaned = fullText.replace(/```json/gi,"").replace(/```/g,"").trim();
+  try{
+    return JSON.parse(cleaned);
+  }catch(e){
+    throw new Error("Got a response that wasn't valid JSON. Please try generating again.");
+  }
+}
+
+async function generate(){
+  const topic = els.topic.value.trim();
+  if(!topic){
+    els.topic.focus();
+    els.topic.style.borderColor = 'var(--coral)';
+    setTimeout(()=>{ els.topic.style.borderColor = ''; }, 900);
+    return;
+  }
+  state.topic = topic;
+  state.level = els.level.value;
+  state.count = parseInt(els.count.value, 10);
+  els.generateBtn.disabled = true;
+  renderLoading();
+
+  try{
+    if(state.mode === 'notes') await generateNotes();
+    else if(state.mode === 'flashcards') await generateFlashcards();
+    else await generateQuiz();
+  }catch(err){
+    renderError(err.message || String(err));
+    showToast('Generation failed', 'err');
+  }finally{
+    els.generateBtn.disabled = false;
+  }
+}
+
+/* ---------------- NOTES ---------------- */
+async function generateNotes(){
+  const sys = "You are a study-notes writer for students. Respond with ONLY raw JSON, no markdown fences, no preamble, matching exactly this schema: " +
+    '{"title": string, "sections": [{"heading": string, "bullets": [string, ...]}], "takeaways": [string, ...]}. ' +
+    "Write 4-6 sections, each with 3-5 short, clear bullets (plain language, no jargon left unexplained). " +
+    "Takeaways: 3-5 concise exam-ready summary points.";
+  const usr = `Create structured study notes on: "${state.topic}". Level: ${state.level}.`;
+  const data = await callClaude(sys, usr);
+  state.data = data;
+  addToHistory({ mode:'notes', topic: state.topic, level: state.level, count: state.count, data });
+  renderNotes();
+}
+
+function renderNotes(){
+  const d = state.data;
+  let html = `<div class="content-head">
+    <div class="content-head-left"><h2>${escapeHtml(d.title || state.topic)}</h2><span class="badge">notes</span></div>
+    <div class="toolbar">
+      <button class="tool-btn" id="copyNotesBtn">⧉ Copy</button>
+      <button class="tool-btn" id="downloadNotesBtn">⬇ Download .md</button>
+      <button class="tool-btn" id="printNotesBtn">🖨 Print</button>
+    </div>
+  </div>`;
+  (d.sections || []).forEach(sec=>{
+    html += `<div class="notes-section"><h3>${escapeHtml(sec.heading)}</h3><ul>`;
+    (sec.bullets || []).forEach(b=> html += `<li>${escapeHtml(b)}</li>`);
+    html += `</ul></div>`;
+  });
+  if(d.takeaways && d.takeaways.length){
+    html += `<div class="takeaways"><h3>Key takeaways</h3><ul>`;
+    d.takeaways.forEach(t=> html += `<li>${escapeHtml(t)}</li>`);
+    html += `</ul></div>`;
+  }
+  els.output.innerHTML = html;
+
+  document.getElementById('copyNotesBtn').addEventListener('click', ()=>{
+    navigator.clipboard.writeText(notesToMarkdown(d)).then(()=> showToast('Notes copied', 'ok'));
+  });
+  document.getElementById('downloadNotesBtn').addEventListener('click', ()=>{
+    downloadFile(slugify(d.title || state.topic) + '.md', notesToMarkdown(d), 'text/markdown');
+    showToast('Downloaded .md', 'ok');
+  });
+  document.getElementById('printNotesBtn').addEventListener('click', ()=> window.print());
+}
+
+function notesToMarkdown(d){
+  let md = `# ${d.title || state.topic}\n\n`;
+  (d.sections||[]).forEach(sec=>{
+    md += `## ${sec.heading}\n`;
+    (sec.bullets||[]).forEach(b=> md += `- ${b}\n`);
+    md += `\n`;
+  });
+  if(d.takeaways && d.takeaways.length){
+    md += `## Key Takeaways\n`;
+    d.takeaways.forEach(t=> md += `- ${t}\n`);
+  }
+  return md;
+}
+function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || 'studysheet'; }
+
+/* ---------------- FLASHCARDS ---------------- */
+async function generateFlashcards(){
+  const sys = "You are a flashcard writer for students. Respond with ONLY raw JSON, no markdown fences, no preamble, matching exactly: " +
+    '{"title": string, "cards": [{"front": string, "back": string}, ...]}. ' +
+    "Front = a short question or term. Back = a concise, clear answer (1-3 sentences).";
+  const usr = `Create ${state.count} flashcards on: "${state.topic}". Level: ${state.level}.`;
+  const data = await callClaude(sys, usr);
+  state.data = data;
+  addToHistory({ mode:'flashcards', topic: state.topic, level: state.level, count: state.count, data });
+  state.fc = { index: 0, flipped: false, order: (data.cards || []).map((_,i)=>i), status: {}, filterUnknown: false };
+  renderFlashcards();
+}
+
+function activeOrder(){
+  const all = state.data.cards.map((_,i)=>i);
+  let ord = state.fc.order.filter(i => all.includes(i));
+  if(state.fc.filterUnknown){
+    ord = ord.filter(i => state.fc.status[i] !== 'know');
+  }
+  return ord;
+}
+
+function renderFlashcards(){
+  const d = state.data;
+  const order = activeOrder();
+  if(order.length === 0){
+    els.output.innerHTML = `
+      <div class="content-head"><div class="content-head-left"><h2>${escapeHtml(d.title || state.topic)}</h2><span class="badge">flashcards</span></div></div>
+      <div class="empty-state"><div class="glyph">🎉</div><h3>All caught up!</h3><p>Every card is marked "know it". <button class="link-btn" id="showAllBtn">Show all cards</button></p></div>`;
+    document.getElementById('showAllBtn').addEventListener('click', ()=>{ state.fc.filterUnknown=false; renderFlashcards(); });
+    return;
+  }
+  if(state.fc.index >= order.length) state.fc.index = 0;
+  const cardIdx = order[state.fc.index];
+  const card = d.cards[cardIdx];
+  const total = order.length;
+  const st = state.fc.status[cardIdx];
+
+  const knowCount = Object.values(state.fc.status).filter(v=>v==='know').length;
+  const learnCount = Object.values(state.fc.status).filter(v=>v==='learn').length;
+
+  let dots = '';
+  order.forEach((ci,i)=>{
+    let cls = 'deck-dot';
+    if(i===state.fc.index) cls += ' active';
+    else if(state.fc.status[ci]==='know') cls += ' marked-know';
+    else if(state.fc.status[ci]==='learn') cls += ' marked-learn';
+    dots += `<span class="${cls}"></span>`;
+  });
+
+  els.output.innerHTML = `
+    <div class="content-head">
+      <div class="content-head-left"><h2>${escapeHtml(d.title || state.topic)}</h2><span class="badge">flashcards</span></div>
+      <div class="toolbar"><button class="tool-btn" id="downloadCsvBtn">⬇ Download .csv (Anki)</button></div>
+    </div>
+    <div class="deck-wrap">
+      <div class="fc-stats">
+        <span class="fc-stat know">✓ know it: ${knowCount}</span>
+        <span class="fc-stat learn">↻ still learning: ${learnCount}</span>
+      </div>
+      <div class="flashcard ${state.fc.flipped?'flipped':''}" id="fcCard">
+        <div class="flashcard-inner">
+          <div class="fc-face fc-front">
+            <span class="fc-tag">Q · ${state.fc.index+1}/${total}</span>
+            ${st ? `<span class="fc-known-mark">${st==='know'?'✅':'🔁'}</span>` : ''}
+            <div class="fc-text">${escapeHtml(card.front)}</div>
+            <span class="fc-flip-note">tap or press space to flip</span>
+          </div>
+          <div class="fc-face fc-back">
+            <span class="fc-tag">A · ${state.fc.index+1}/${total}</span>
+            <div class="fc-text">${escapeHtml(card.back)}</div>
+            <span class="fc-flip-note">tap to flip back</span>
+          </div>
+        </div>
+      </div>
+      <div class="know-buttons">
+        <button class="know-btn learn-btn ${st==='learn'?'active-learn':''}" id="fcLearn">↻ Still learning</button>
+        <button class="know-btn know-btn-yes ${st==='know'?'active-know':''}" id="fcKnow">✓ Know it</button>
+      </div>
+      <div class="deck-controls">
+        <button class="deck-btn" id="fcPrev" ${state.fc.index===0?'disabled':''}>‹</button>
+        <div class="deck-progress">${dots}</div>
+        <button class="deck-btn" id="fcNext" ${state.fc.index===total-1?'disabled':''}>›</button>
+        <span class="deck-count">${state.fc.index+1} / ${total}</span>
+      </div>
+      <div class="deck-actions">
+        <button class="link-btn" id="fcShuffle">shuffle deck</button>
+        <button class="link-btn ${state.fc.filterUnknown?'active-filter':''}" id="fcFilter">${state.fc.filterUnknown?'showing: still learning only':'study only "still learning"'}</button>
+      </div>
+    </div>`;
+
+  const flip = ()=>{ state.fc.flipped = !state.fc.flipped; document.getElementById('fcCard').classList.toggle('flipped'); };
+  document.getElementById('fcCard').addEventListener('click', flip);
+  document.getElementById('fcPrev').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(state.fc.index>0){ state.fc.index--; state.fc.flipped=false; renderFlashcards(); }
+  });
+  document.getElementById('fcNext').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(state.fc.index<total-1){ state.fc.index++; state.fc.flipped=false; renderFlashcards(); }
+  });
+  document.getElementById('fcKnow').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    state.fc.status[cardIdx] = state.fc.status[cardIdx]==='know' ? null : 'know';
+    renderFlashcards();
+  });
+  document.getElementById('fcLearn').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    state.fc.status[cardIdx] = state.fc.status[cardIdx]==='learn' ? null : 'learn';
+    renderFlashcards();
+  });
+  document.getElementById('fcShuffle').addEventListener('click', ()=>{
+    for(let i=state.fc.order.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [state.fc.order[i], state.fc.order[j]] = [state.fc.order[j], state.fc.order[i]];
+    }
+    state.fc.index = 0; state.fc.flipped = false;
+    renderFlashcards();
+  });
+  document.getElementById('fcFilter').addEventListener('click', ()=>{
+    state.fc.filterUnknown = !state.fc.filterUnknown;
+    state.fc.index = 0; state.fc.flipped = false;
+    renderFlashcards();
+  });
+  document.getElementById('downloadCsvBtn').addEventListener('click', ()=>{
+    const csv = 'Front,Back\n' + d.cards.map(c => `"${c.front.replace(/"/g,'""')}","${c.back.replace(/"/g,'""')}"`).join('\n');
+    downloadFile(slugify(d.title || state.topic) + '-flashcards.csv', csv, 'text/csv');
+    showToast('Downloaded .csv — importable into Anki', 'ok');
+  });
+}
+
+/* keyboard shortcuts for flashcards */
+document.addEventListener('keydown', (e)=>{
+  if(state.mode !== 'flashcards' || !state.data || !document.getElementById('fcCard')) return;
+  if(e.code === 'Space'){ e.preventDefault(); document.getElementById('fcCard').click(); }
+  else if(e.key === 'ArrowRight'){ const b=document.getElementById('fcNext'); if(b && !b.disabled) b.click(); }
+  else if(e.key === 'ArrowLeft'){ const b=document.getElementById('fcPrev'); if(b && !b.disabled) b.click(); }
+});
+
+/* ---------------- QUIZ ---------------- */
+async function generateQuiz(){
+  const sys = "You are a quiz writer for students. Respond with ONLY raw JSON, no markdown fences, no preamble, matching exactly: " +
+    '{"title": string, "questions": [{"question": string, "options": [string,string,string,string], "correctIndex": number, "explanation": string}, ...]}. ' +
+    "Exactly 4 options per question, correctIndex is 0-based. Explanation: 1-2 sentences on why the answer is correct.";
+  const usr = `Create a ${state.count}-question multiple-choice quiz on: "${state.topic}". Level: ${state.level}.`;
+  const data = await callClaude(sys, usr);
+  state.data = data;
+  addToHistory({ mode:'quiz', topic: state.topic, level: state.level, count: state.count, data });
+  state.quiz = { index: 0, answers: new Array((data.questions||[]).length).fill(null), locked: false, startTime: Date.now(), elapsed: 0, timerId: null };
+  startQuizTimer();
+  renderQuiz();
+}
+
+function startQuizTimer(){
+  if(state.quiz.timerId) clearInterval(state.quiz.timerId);
+  state.quiz.timerId = setInterval(()=>{
+    const el = document.getElementById('quizTimerVal');
+    if(el && state.quiz.startTime) el.textContent = formatTime(Date.now()-state.quiz.startTime);
+  }, 1000);
+}
+function stopQuizTimer(){
+  if(state.quiz.timerId) clearInterval(state.quiz.timerId);
+  state.quiz.timerId = null;
+}
+function formatTime(ms){
+  const s = Math.floor(ms/1000);
+  const m = Math.floor(s/60);
+  const rs = s%60;
+  return `${m}:${String(rs).padStart(2,'0')}`;
+}
+
+function renderQuiz(){
+  const d = state.data;
+  const qs = d.questions;
+  const i = state.quiz.index;
+  const q = qs[i];
+  const total = qs.length;
+  const selected = state.quiz.answers[i];
+  const locked = selected !== null;
+  const letters = ['A','B','C','D'];
+  const pct = Math.round(((i)/total)*100);
+
+  let optionsHtml = '';
+  q.options.forEach((opt, idx)=>{
+    let cls = 'quiz-option' + (locked?' locked':'');
+    if(locked && idx === selected) cls += (idx===q.correctIndex ? ' selected correct' : ' selected incorrect');
+    if(locked && idx === q.correctIndex && idx !== selected) cls += ' correct';
+    optionsHtml += `<div class="${cls}" data-idx="${idx}">
+      <div class="bubble">${letters[idx]}</div>
+      <div class="quiz-option-text">${escapeHtml(opt)}</div>
+    </div>`;
+  });
+
+  els.output.innerHTML = `
+    <div class="content-head"><div class="content-head-left"><h2>${escapeHtml(d.title || state.topic)}</h2><span class="badge">quiz</span></div></div>
+    <div class="quiz-top-row">
+      <span class="quiz-timer">⏱ <span id="quizTimerVal">${formatTime(Date.now()-(state.quiz.startTime||Date.now()))}</span></span>
+      <span class="quiz-timer">Q${i+1} / ${total}</span>
+    </div>
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+    <div class="quiz-card">
+      <div class="quiz-qnum">QUESTION ${i+1} OF ${total}</div>
+      <p class="quiz-question">${escapeHtml(q.question)}</p>
+      <div class="quiz-options">${optionsHtml}</div>
+      ${locked ? `<div class="quiz-explain"><strong>${selected===q.correctIndex?'Correct. ':'Not quite. '}</strong>${escapeHtml(q.explanation)}</div>` : ''}
+      <div class="quiz-footer">
+        ${locked ? `<button class="next-btn" id="nextQBtn">${i===total-1?'See results':'Next question'} →</button>` : ''}
+      </div>
+    </div>`;
+
+  if(!locked){
+    document.querySelectorAll('.quiz-option').forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        state.quiz.answers[i] = parseInt(opt.dataset.idx, 10);
+        renderQuiz();
+      });
+    });
+  } else {
+    document.getElementById('nextQBtn').addEventListener('click', ()=>{
+      if(i === total-1){ stopQuizTimer(); renderScore(); }
+      else { state.quiz.index++; renderQuiz(); }
+    });
+  }
+}
+
+/* keyboard shortcuts for quiz: 1-4 to answer, enter for next */
+document.addEventListener('keydown', (e)=>{
+  if(state.mode !== 'quiz' || !state.data || !state.data.questions) return;
+  const i = state.quiz.index;
+  if(state.quiz.answers[i] === null && ['1','2','3','4'].includes(e.key)){
+    const opts = document.querySelectorAll('.quiz-option');
+    const idx = parseInt(e.key,10)-1;
+    if(opts[idx]) opts[idx].click();
+  } else if(e.key === 'Enter'){
+    const nb = document.getElementById('nextQBtn');
+    if(nb) nb.click();
+  }
+});
+
+function renderScore(){
+  const d = state.data;
+  const qs = d.questions;
+  const total = qs.length;
+  const correct = state.quiz.answers.filter((a,idx)=> a === qs[idx].correctIndex).length;
+  const pct = Math.round((correct/total)*100);
+  const timeStr = formatTime(Date.now()-(state.quiz.startTime||Date.now()));
+
+  let grid = '';
+  qs.forEach((q, idx)=>{
+    const ok = state.quiz.answers[idx] === q.correctIndex;
+    grid += `<div class="scantron-cell ${ok?'correct':'incorrect'}">${idx+1}</div>`;
+  });
+
+  els.output.innerHTML = `
+    <div class="content-head"><div class="content-head-left"><h2>${escapeHtml(d.title || state.topic)}</h2><span class="badge">results</span></div></div>
+    <div class="quiz-card score-screen">
+      <div class="score-time">completed in ${timeStr}</div>
+      <div class="score-ring" style="--pct:${pct}">
+        <div class="score-ring-inner">
+          <span class="num">${pct}%</span>
+          <span class="lbl">SCORE</span>
+        </div>
+      </div>
+      <p style="color:var(--ink-soft);font-size:14px;margin:0 0 4px;">${correct} of ${total} correct</p>
+      <div class="scantron-grid">${grid}</div>
+      <div class="score-actions">
+        <button class="retake-btn" id="retakeBtn">Retake quiz</button>
+      </div>
+    </div>`;
+
+  document.getElementById('retakeBtn').addEventListener('click', ()=>{
+    state.quiz = { index: 0, answers: new Array(total).fill(null), locked: false, startTime: Date.now(), elapsed:0, timerId:null };
+    startQuizTimer();
+    renderQuiz();
+  });
+
+  if(pct >= 80) launchConfetti();
+  updateQuizStats(pct);
+}
+
+function updateQuizStats(pct){
+  const taken = parseInt(localStorage.getItem('studysheet_quizzes_taken')||'0',10) + 1;
+  const avgPrev = parseFloat(localStorage.getItem('studysheet_quiz_avg')||'0');
+  const newAvg = ((avgPrev*(taken-1)) + pct) / taken;
+  localStorage.setItem('studysheet_quizzes_taken', String(taken));
+  localStorage.setItem('studysheet_quiz_avg', newAvg.toFixed(1));
+}
+
+/* ---------------- confetti ---------------- */
+function launchConfetti(){
+  const canvas = document.getElementById('confettiCanvas');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const colors = ['#5B4FE9','#1FAE8E','#E0A500','#E8543E','#8B7EFF'];
+  const pieces = Array.from({length:120}, ()=>({
+    x: Math.random()*canvas.width,
+    y: -20 - Math.random()*canvas.height*0.3,
+    r: 4+Math.random()*5,
+    c: colors[Math.floor(Math.random()*colors.length)],
+    vy: 2+Math.random()*3,
+    vx: -1.5+Math.random()*3,
+    rot: Math.random()*360,
+    vr: -6+Math.random()*12
+  }));
+  let frame = 0;
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save();
+      ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*0.6);
+      ctx.restore();
+    });
+    frame++;
+    if(frame < 130) requestAnimationFrame(tick);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  tick();
+}
+</script>
+</body>
+</html>
